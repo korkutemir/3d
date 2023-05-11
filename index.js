@@ -61,8 +61,8 @@ app.get('/',function(req,res,next) {
    // res.download('eko.pdf');
 }); 
 
-app.get('/megagen-content',function(req,res,next) {
-  res.sendFile( __dirname + "/www/products_server3.html");
+app.get('/delek',function(req,res,next) {
+  res.sendFile( __dirname + "/delek.html");
  // res.download('eko.pdf');
 });
 
