@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+  overflow: hidden;
+  margin: 0;
+}
+
+/*#canvas {
+  height: 100%;
+  width: 100%;
+}*/
+
+.label {
+  text-align: center;
+  width: 460px;
+  height: 0px;
+ /* border: 1px solid white;*/
+ border: none;
+  border-radius: 5px;
+ /* background: rgba( 0, 0, 0, .6 );*/
+}
+.label2 {
+  text-align: center;
+  width: 460px;
+  height: 0px;
+ border: none;
+  border-radius: 5px;
+}
+.anno {
+  width: 40px;
+  height: 40px;
+  background: rgba( 0, 0, 0, .6 );
+  border-radius: 50%;
+  border:3px solid white;
+  visibility: hidden;
+}
+.anno p {
+  font-size: 30px;
+  color:white;
+  text-align: center;
+  padding-top:0px;
+  position: relative;
+  left:0;
+  top:0;
+  transform: translate(0%,-75%);
+}
+
+.anno2 {
+  width: 50px;
+  height: 50px;
+  background: rgba( 0, 0, 0, .6 );
+  border-radius: 50%;
+  border:3px solid white;
+  visibility: hidden;
+}
+.anno2 p {
+  font-size: 35px;
+  color:white;
+  text-align: center;
+  padding-top:0px;
+  position: relative;
+  left:0;
+  top:0;
+  transform: translate(0%,-75%);
+}
+
+.anno3 {
+  width: 50px;
+  height: 50px;
+  background: rgba( 0, 0, 0, .6 );
+  border-radius: 50%;
+  border:3px solid white;
+  visibility: visible;
+}
+.anno3 p {
+  font-size: 35px;
+  color:white;
+  text-align: center;
+  padding-top:0px;
+  position: relative;
+  left:0;
+  top:0;
+  transform: translate(0%,-75%);
+}
+
+.anno4 {
+  width: 70px;
+  height: 70px;
+  background: rgba( 0, 0, 0, .6 );
+  border-radius: 50%;
+  border:3px solid white;
+  visibility: visible;
+}
+.anno4 p {
+  font-size: 45px;
+  color:white;
+  text-align: center;
+  padding-top:0px;
+  position: relative;
+  left:0;
+  top:0;
+  transform: translate(0%,-75%);
+}
+
+.anno5 {
+  width: 50px;
+  height: 50px;
+  background: rgba( 0, 0, 0, .6 );
+  border-radius: 50%;
+  border:3px solid white;
+  visibility: hidden;
+}
+.anno5 p {
+  font-size: 35px;
+  color:white;
+  text-align: center;
+  padding-top:0px;
+  position: relative;
+  left:0;
+  top:0;
+  transform: translate(0%,-75%);
+}
+.anno6 {
+  width: 50px;
+  height: 50px;
+  background: rgba( 0, 0, 0, .6 );
+  border-radius: 50%;
+  border:3px solid white;
+  visibility:hidden;
+}
+.anno6 p {
+  font-size: 35px;
+  color:white;
+  text-align: center;
+  padding-top:0px;
+  position: relative;
+  left:0;
+  top:0;
+  transform: translate(0%,-75%);
+}
+.anno7 {
+  width: 50px;
+  height: 50px;
+  background: rgba( 0, 0, 0, .6 );
+  border-radius: 50%;
+  border:3px solid white;
+  visibility:hidden;
+}
+.anno7 p {
+  font-size: 35px;
+  color:white;
+  text-align: center;
+  padding-top:0px;
+  position: relative;
+  left:0;
+  top:0;
+  transform: translate(0%,-75%);
+}
+.gate {
+  height: 780px;
+  width: 280px;
+  background: transparent; 
+  visibility: hidden;
+}
+.gate6 {
+  height: 840px;
+  width: 300px;
+  background:transparent; 
+  visibility: hidden;
+}
+.gate7 {
+  height: 970px;
+  width: 450px;
+  background:transparent; 
+  visibility: hidden;
+}
+.gate2 {
+  height: 160px;
+  width: 400px;
+  background: transparent;
+  visibility: hidden;
+}
+.gate3 {
+  height: 1160px;
+  width: 400px;
+  background: transparent; 
+  visibility: hidden;
+}
+.outdoor {
+  height: 1160px;
+  width: 400px;
+  background: transparent; 
+}
+.outdoor_2 {
+  height: 840px;
+  width: 1280px;
+  background: transparent; 
+}
+.outdoor_3 {
+  height: 1280px;
+  width: 500px;
+  background: transparent;
+  visibility: hidden;
+}
+#fps {
+  position: absolute;
+  left:10px;
+  top:10px;
+}
+    </style>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from "https://cdn.skypack.dev/three@0.136.0";
+import {
+  OrbitControls
+} from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js";
+import {
+  CSS3DRenderer,
+  CSS3DObject
+} from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/renderers/CSS3DRenderer.js';
+
+window.onload=function() {
+
+//var gl=document.getElementsByTagName("canvas")[0];
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000);
+camera.position.set(10, 10, 10);
+camera.target = new THREE.Vector3( 0, 0, 0 );
+var renderer = new THREE.WebGLRenderer({
+  antialias: true
+ // context: gl.getContext('webgl2')
+  //canvas:gl
+});
+//renderer.getContext('webgl2');
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+
+var labelRenderer = new CSS3DRenderer();
+labelRenderer.setSize(innerWidth, innerHeight);
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.top = '0px';
+document.body.appendChild(labelRenderer.domElement);
+
+
+var isUserInteracting = false,
+onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+lon = 0, onMouseDownLon = 0,
+lat = 0, onMouseDownLat = 0,
+phi = 0, theta = 0;
+
+var onPointerDownPointerX,onPointerDownPointerY,onPointerDownLon,onPointerDownLat;
+var image2='360/minsk.jpg';
+var image1="360/garaj3.jpg";
+var image3="360/new (2).jpg";
+var image4="360/360-2.jpeg";
+
+var sayac1=0;
+var mesh1,mesh2,mesh3,mesh4;
+var target1,target2;
+var fov1=0;
+var check_fov=false;
+var image_array=["360/minsk.jpg","360/last (1).jpg","360/new (1).jpg"];
+
+if(screen.availWidth >=992) {
+
+    document.addEventListener( 'pointerdown', onDocumentMouseDown, false );
+    document.addEventListener( 'pointermove', onDocumentMouseMove, false );
+    document.addEventListener( 'pointerup', onDocumentMouseUp, false );
+    document.addEventListener( 'wheel', onDocumentMouseWheel, false );
+
+}
+else {
+  
+  document.addEventListener( 'touchstart', onDocumentMouseDown2, false );
+    document.addEventListener( 'touchmove', onDocumentMouseMove2, false );
+    document.addEventListener( 'touchend', onDocumentMouseUp2, false );
+    document.addEventListener( 'wheel', onDocumentMouseWheel2, false );
+}
+//var controls = new OrbitControls(camera, labelRenderer.domElement);
+
+var light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(20, 20, 30);
+scene.add(light);
+
+var light2 = new THREE.DirectionalLight(0xffffff, 1);
+light2.position.set(-7.5, 3.9, -27);
+scene.add(light2);
+scene.add(new THREE.AmbientLight(0xffffff, 1));
+
+//scene.add(new THREE.GridHelper(10, 10));
+
+var box = new THREE.Mesh(new THREE.BoxBufferGeometry(0, 0, 0), new THREE.MeshLambertMaterial({
+  color: 0x0088ff,
+  wireframe: false
+}));
+scene.add(box);
+
+
+/*  var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+    geometry.scale( - 1, 1, 1 );
+
+    var material = new THREE.MeshBasicMaterial( {
+        map: new THREE.TextureLoader().load( '360-2.jpeg' )
+    } );
+
+    var mesh = new THREE.Mesh( geometry, material );
+
+    scene.add( mesh );*/
+var sayac=0;
+
+
+   // load(image);
+
+/*var k = 'value';
+
+   for(var i=1;i<=image_array.length;i++) {
+     load(image_array[i-1]);
+  sayac1++;
+  eval('var ' + k + i + '= ' + i + ';');
+
+   }*/
+load4(image3);
+load1(image1);
+load2(image2);
+load3(image4);
+//load4(image3);
+
+    function load1(image1) {
+      
+      var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+    geometry.scale( - 1, 1, 1 );
+
+    var material = new THREE.MeshBasicMaterial( {
+        map: new THREE.TextureLoader().load( image1 )
+    } );
+
+    mesh1= new THREE.Mesh( geometry, material );
+    mesh1.material.transparent = true;
+   // scene.add(mesh1);
+
+   
+    }
+
+
+    function load2(image2) {
+      
+      var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+    geometry.scale( - 1, 1, 1 );
+
+    var material = new THREE.MeshBasicMaterial( {
+        map: new THREE.TextureLoader().load( image2 )
+    } );
+
+    mesh2= new THREE.Mesh( geometry, material );
+    mesh2.material.transparent = true;
+
+   // scene.add(mesh2);
+    }
+
+   function load3(image4) {
+      
+      var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+    geometry.scale( - 1, 1, 1 );
+
+    var material = new THREE.MeshBasicMaterial( {
+        map: new THREE.TextureLoader().load( image4 )
+    } );
+
+    mesh4= new THREE.Mesh( geometry, material );
+    mesh4.material.transparent = true;
+
+  //  scene.add(mesh4);
+    }
+
+    function load4(image3) {
+      
+      var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+    geometry.scale( - 1, 1, 1 );
+
+   var material = new THREE.MeshBasicMaterial( {
+        map: new THREE.TextureLoader().load( image3 )
+    } );
+
+    mesh3= new THREE.Mesh( geometry, material );
+// enable transparency
+mesh3.material.transparent = true;
+target1=mesh3;
+
+// set opacity to 50%
+//mesh3.material.opacity = 0.5; 
+    scene.add(mesh3);
+    
+    }
+
+   async function came_fov() {
+     await new Promise(function(resolve) {
+       target1.material.opacity=1;
+       target2.material.opacity=1;
+      var fov_anim=window.setInterval(function() {
+      fov1-=5;
+      camera.fov-=5;
+      camera.updateProjectionMatrix();
+      console.log(camera.fov)
+      target1.material.opacity-=0.1;
+     // target2.material.opacity+=0.1;
+      if(fov1<=-56) {
+        clearInterval(fov_anim);
+        fov1=0;
+        check_fov=true;
+        resolve();
+      }
+    },80);
+     }); 
+    }
+
+    
+var pos = new THREE.Vector3(-7.5, 3.9, -27);
+var normal = new THREE.Vector3(1, 0, 0);
+
+var cNormal = new THREE.Vector3();
+var cPos = new THREE.Vector3();
+var m4 = new THREE.Matrix4();
+
+var div = document.createElement('video');
+div.className = 'label';
+//div.textContent = '1';
+div.src="360/karasu.mp4";
+div.setAttribute("loop",true);
+div.muted=true;
+div.onloadeddata=function() {
+  div.play();
+}
+var label = new CSS3DObject(div);
+label.position.copy(pos);
+label.rotation.y = Math.PI * 0.12;
+label.scale.set(0.025, 0.025, 1);
+box.add(label);
+
+var pos_web = new THREE.Vector3(0, 8.8, -20);
+var div_web = document.createElement('iframe');
+div_web.className = 'label2';
+div_web.src="https://mbunalyapi.com";
+var label = new CSS3DObject(div_web);
+label.position.copy(pos_web);
+label.rotation.y = Math.PI * 0;
+label.scale.set(0.025, 0.025, 1);
+box.add(label);
+
+var pos2 = new THREE.Vector3(-10, 10, 2);
+
+var div2=document.createElement("div");
+div2.className="anno";
+var text1=document.createElement("p");
+text1.innerHTML="4";
+div2.appendChild(text1);
+var label2 = new CSS3DObject(div2);
+label2.position.copy(pos2);
+label2.rotation.y = Math.PI * 0.5;
+label2.scale.set(0.025, 0.025, 1);
+box.add(label2);
+
+var pos3 = new THREE.Vector3(-19.7, 5.7, -20);
+
+var div3=document.createElement("div");
+div3.className="gate";
+
+var label3 = new CSS3DObject(div3);
+label3.position.copy(pos3);
+label3.rotation.y = Math.PI * 1.1;
+label3.scale.set(0.025, 0.025, 1);
+box.add(label3);
+
+var pos3_2 = new THREE.Vector3(15, 4.7, -23);
+
+var div3_2=document.createElement("div");
+div3_2.className="gate6";
+
+var label3 = new CSS3DObject(div3_2);
+label3.position.copy(pos3_2);
+label3.rotation.y = Math.PI * 0.615;
+label3.scale.set(0.025, 0.025, 1);
+box.add(label3);
+
+div3_2.onpointerenter=function() {
+  this.style.background="rgba( 255, 255, 255, .4 )";
+  this.style.border="1px solid white";
+}
+
+div3_2.onpointerleave=function() {
+  this.style.background="transparent";
+  this.style.border="none";
+}
+
+div3_2.onpointerdown=async function() {
+  target1=mesh2;
+  target2=mesh4;
+  await came_fov();
+  scene.remove(mesh2);
+    scene.remove(mesh1);
+    scene.remove(mesh3);
+    scene.add(mesh4);
+    document.getElementsByClassName("label")[0].style.height="0px";
+    document.getElementsByClassName("label2")[0].style.height="260px";
+  document.getElementsByClassName("anno")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno2")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno6")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno3")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno7")[0].style.visibility="visible";
+  document.getElementsByClassName("anno4")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno5")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate6")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate7")[0].style.visibility="visible";
+  document.getElementsByClassName("gate3")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_2")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_3")[0].style.visibility="hidden";
+  camera.fov=60;
+  camera.updateProjectionMatrix();
+ 
+}
+
+var pos3_3 = new THREE.Vector3(20.6, 5.4, -8);
+
+var div3_3=document.createElement("div");
+div3_3.className="gate7";
+
+var label3 = new CSS3DObject(div3_3);
+label3.position.copy(pos3_3);
+label3.rotation.y = Math.PI * 0.48;
+label3.scale.set(0.025, 0.025, 1);
+box.add(label3);
+
+div3_3.onpointerenter=function() {
+  this.style.background="rgba( 255, 255, 255, .4 )";
+  this.style.border="1px solid white";
+}
+
+div3_3.onpointerleave=function() {
+  this.style.background="transparent";
+  this.style.border="none";
+}
+
+div3_3.onpointerdown=async function() {
+  target1=mesh4;
+  target2=mesh2;
+  await came_fov();
+  scene.remove(mesh4);
+    scene.remove(mesh1);
+    scene.remove(mesh3);
+    scene.add(mesh2);
+    document.getElementsByClassName("label")[0].style.height="280px";
+    document.getElementsByClassName("label2")[0].style.height="0px";
+  document.getElementsByClassName("anno")[0].style.visibility="visible";
+  document.getElementsByClassName("anno2")[0].style.visibility="visible";
+  document.getElementsByClassName("anno6")[0].style.visibility="visible";
+  document.getElementsByClassName("anno3")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno7")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno4")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno5")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate")[0].style.visibility="visible";
+  document.getElementsByClassName("gate6")[0].style.visibility="visible";
+  document.getElementsByClassName("gate7")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate3")[0].style.visibility="visible";
+  document.getElementsByClassName("outdoor")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_2")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_3")[0].style.visibility="hidden";
+  camera.fov=60;
+  camera.updateProjectionMatrix();
+ 
+}
+
+var pos_anno_6 = new THREE.Vector3(19.5, 9.4, -8);
+
+var div_anno_6=document.createElement("div");
+div_anno_6.className="anno7";
+var text_anno_6=document.createElement("p");
+text_anno_6.innerHTML="7";
+div_anno_6.appendChild(text_anno_6);
+var label2 = new CSS3DObject(div_anno_6);
+label2.position.copy(pos_anno_6);
+label2.rotation.y = Math.PI * 0;
+label2.scale.set(0.025, 0.025, 1);
+box.add(label2);
+
+div_anno_6.onpointerenter=function() {
+  this.style.border="3px solid red";
+}
+div_anno_6.onpointerleave=function() {
+  this.style.border="3px solid white";
+}
+
+var pos_anno = new THREE.Vector3(-15.7, 9.7, -15);
+
+var div_anno_1=document.createElement("div");
+div_anno_1.className="anno2";
+var text_anno_1=document.createElement("p");
+text_anno_1.innerHTML="3";
+div_anno_1.appendChild(text_anno_1);
+var label2 = new CSS3DObject(div_anno_1);
+label2.position.copy(pos_anno);
+label2.rotation.y = Math.PI * 0;
+label2.scale.set(0.025, 0.025, 1);
+box.add(label2);
+
+div_anno_1.onpointerenter=function() {
+  this.style.border="3px solid red";
+}
+div_anno_1.onpointerleave=function() {
+  this.style.border="3px solid white";
+}
+
+
+var pos_anno_2 = new THREE.Vector3(-30.7, 12.0, 14.4);
+
+var div_anno_2=document.createElement("div");
+div_anno_2.className="anno3";
+var text_anno_2=document.createElement("p");
+text_anno_2.innerHTML="1";
+div_anno_2.appendChild(text_anno_2);
+var label2 = new CSS3DObject(div_anno_2);
+label2.position.copy(pos_anno_2);
+label2.rotation.y = Math.PI * 0.5;
+label2.scale.set(0.025, 0.025, 1);
+box.add(label2);
+
+div_anno_2.onpointerenter=function() {
+  this.style.border="3px solid red";
+}
+div_anno_2.onpointerleave=function() {
+  this.style.border="3px solid white";
+}
+
+var pos_anno_3 = new THREE.Vector3(-28.0, 3.8, 49.4);
+
+var div_anno_3=document.createElement("div");
+div_anno_3.className="anno4";
+var text_anno_3=document.createElement("p");
+text_anno_3.innerHTML="2";
+div_anno_3.appendChild(text_anno_3);
+var label2 = new CSS3DObject(div_anno_3);
+label2.position.copy(pos_anno_3);
+label2.rotation.y = Math.PI * 0.9;
+label2.scale.set(0.025, 0.025, 1);
+box.add(label2);
+
+div_anno_3.onpointerenter=function() {
+  this.style.border="3px solid red";
+}
+div_anno_3.onpointerleave=function() {
+  this.style.border="3px solid white";
+}
+
+var pos_anno_4 = new THREE.Vector3(39, 13, 9.5);
+
+var div_anno_4=document.createElement("div");
+div_anno_4.className="anno5";
+var text_anno_4=document.createElement("p");
+text_anno_4.innerHTML="5";
+div_anno_4.appendChild(text_anno_4);
+var label2 = new CSS3DObject(div_anno_4);
+label2.position.copy(pos_anno_4);
+label2.rotation.y = Math.PI * 1.5;
+label2.scale.set(0.025, 0.025, 1);
+box.add(label2);
+
+div_anno_4.onpointerenter=function() {
+  this.style.border="3px solid red";
+}
+div_anno_4.onpointerleave=function() {
+  this.style.border="3px solid white";
+}
+
+var pos_anno_5 = new THREE.Vector3(14, 7.7, -20);
+
+var div_anno_5=document.createElement("div");
+div_anno_5.className="anno6";
+var text_anno_5=document.createElement("p");
+text_anno_5.innerHTML="6";
+div_anno_5.appendChild(text_anno_5);
+var label2 = new CSS3DObject(div_anno_5);
+label2.position.copy(pos_anno_5);
+label2.rotation.y = Math.PI * 0;
+label2.scale.set(0.025, 0.025, 1);
+box.add(label2);
+
+div_anno_5.onpointerenter=function() {
+  this.style.border="3px solid red";
+}
+div_anno_5.onpointerleave=function() {
+  this.style.border="3px solid white";
+}
+
+div3.onpointerenter=function() {
+  this.style.background="rgba( 255, 255, 255, .4 )";
+  this.style.border="1px solid white";
+}
+
+div3.onpointerleave=function() {
+  this.style.background="transparent";
+  this.style.border="none";
+}
+
+div3.onpointerdown=async function() {
+  target1=mesh2;
+  target2=mesh3;
+  await came_fov();
+  scene.remove(mesh1);
+    scene.remove(mesh2);
+    scene.remove(mesh4);
+    scene.add(mesh3);
+    document.getElementsByClassName("label")[0].style.height="0px";
+  document.getElementsByClassName("anno")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno2")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno6")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno3")[0].style.visibility="visible";
+  document.getElementsByClassName("anno4")[0].style.visibility="visible";
+  document.getElementsByClassName("anno5")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate6")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate7")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate3")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor")[0].style.visibility="visible";
+  document.getElementsByClassName("outdoor_2")[0].style.visibility="visible";
+  document.getElementsByClassName("outdoor_3")[0].style.visibility="hidden";
+  camera.fov=60;
+  camera.updateProjectionMatrix();
+ 
+}
+
+var pos3_1 = new THREE.Vector3(-19.7, 3.0, -4);
+
+var div5=document.createElement("div");
+div5.className="gate3";
+
+var label5 = new CSS3DObject(div5);
+label5.position.copy(pos3_1);
+label5.rotation.y = Math.PI * 0.6;
+label5.scale.set(0.025, 0.025, 1);
+box.add(label5);
+
+div5.onpointerenter=function() {
+  this.style.background="rgba( 255, 255, 255, .4 )";
+  this.style.border="1px solid white";
+ 
+}
+
+div5.onpointerleave=function() {
+  this.style.background="transparent";
+  this.style.border="none";
+}
+
+div5.onpointerdown=async function() {
+  target1=mesh2;
+  target2=mesh1;
+  await came_fov();
+  scene.remove(mesh3);
+    scene.remove(mesh2);
+    scene.remove(mesh4);
+    scene.add(mesh1);
+    document.getElementsByClassName("label")[0].style.height="0px";
+  document.getElementsByClassName("anno")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno2")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno6")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno3")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno4")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno5")[0].style.visibility="visible";
+  document.getElementsByClassName("gate")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate3")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate6")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate7")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_2")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_3")[0].style.visibility="visible";
+  camera.fov=60;
+  camera.updateProjectionMatrix();
+}
+
+var check=false;
+
+var div_animation=window.setInterval(function() {
+  if(check==false) {
+    div2.style.height="30px";
+    div2.style.width="30px";
+    text1.style.fontSize="20px";
+    check=true;
+  }
+  else if(check==true) {
+    div2.style.height="40px";
+    div2.style.width="40px";
+    text1.style.fontSize="30px";
+    check=false;
+  }
+
+},1000);
+
+var div_animation_2=window.setInterval(function() {
+  if(check==false) {
+    div_anno_1.style.height="40px";
+    div_anno_1.style.width="40px";
+    text_anno_1.style.fontSize="30px";
+    check=true;
+  }
+  else if(check==true) {
+    div_anno_1.style.height="50px";
+    div_anno_1.style.width="50px";
+    text_anno_1.style.fontSize="35px";
+    check=false;
+  }
+
+},1000);
+
+var div_animation_3=window.setInterval(function() {
+  if(check==false) {
+    div_anno_2.style.height="40px";
+    div_anno_2.style.width="40px";
+    text_anno_2.style.fontSize="30px";
+    check=true;
+  }
+  else if(check==true) {
+    div_anno_2.style.height="50px";
+    div_anno_2.style.width="50px";
+    text_anno_2.style.fontSize="35px";
+    check=false;
+  }
+
+},1000);
+
+
+var div_animation_4=window.setInterval(function() {
+  if(check==false) {
+    div_anno_3.style.height="60px";
+    div_anno_3.style.width="60px";
+    text_anno_3.style.fontSize="40px";
+    check=true;
+  }
+  else if(check==true) {
+    div_anno_3.style.height="70px";
+    div_anno_3.style.width="70px";
+    text_anno_3.style.fontSize="45px";
+    check=false;
+  }
+
+},1000);
+
+var div_animation_5=window.setInterval(function() {
+  if(check==false) {
+    div_anno_4.style.height="40px";
+    div_anno_4.style.width="40px";
+    text_anno_4.style.fontSize="30px";
+    check=true;
+  }
+  else if(check==true) {
+    div_anno_4.style.height="50px";
+    div_anno_4.style.width="50px";
+    text_anno_4.style.fontSize="35px";
+    check=false;
+  }
+
+},1000);
+
+var div_animation_6=window.setInterval(function() {
+  if(check==false) {
+    div_anno_5.style.height="40px";
+    div_anno_5.style.width="40px";
+    text_anno_5.style.fontSize="30px";
+    check=true;
+  }
+  else if(check==true) {
+    div_anno_5.style.height="50px";
+    div_anno_5.style.width="50px";
+    text_anno_5.style.fontSize="35px";
+    check=false;
+  }
+
+},1000);
+
+var div_animation_7=window.setInterval(function() {
+  if(check==false) {
+    div_anno_6.style.height="40px";
+    div_anno_6.style.width="40px";
+    text_anno_6.style.fontSize="30px";
+    check=true;
+  }
+  else if(check==true) {
+    div_anno_6.style.height="50px";
+    div_anno_6.style.width="50px";
+    text_anno_6.style.fontSize="35px";
+    check=false;
+  }
+
+},1000);
+
+div2.onpointerenter=function() {
+  this.style.border="3px solid red";
+}
+div2.onpointerleave=function() {
+  this.style.border="3px solid white";
+}
+
+var pos4 = new THREE.Vector3(0, 35, -40);
+
+var div4=document.createElement("div");
+div4.className="gate2";
+
+var label4 = new CSS3DObject(div4);
+label4.position.copy(pos4);
+label4.rotation.y = Math.PI * 1;
+label4.scale.set(0.025, 0.025, 1);
+box.add(label4);
+
+div4.onpointerenter=function() {
+  this.style.background="rgba( 255, 255, 255, .4 )";
+  this.style.border="1px solid white";
+}
+
+div4.onpointerleave=function() {
+  this.style.background="transparent";
+  this.style.border="none";
+}
+
+var pos_outdoor = new THREE.Vector3(-70.7, 6.0, 17.4);
+
+var div_outdoor=document.createElement("div");
+div_outdoor.className="outdoor";
+
+var label_outdoor = new CSS3DObject(div_outdoor);
+label_outdoor.position.copy(pos_outdoor );
+label_outdoor.rotation.y = Math.PI * 0.45;
+label_outdoor.scale.set(0.025, 0.025, 1);
+box.add(label_outdoor );
+
+div_outdoor.onpointerenter=function() {
+  this.style.background="rgba( 255, 255, 255, .4 )";
+  this.style.border="1px solid white";
+}
+
+div_outdoor.onpointerleave=function() {
+  this.style.background="transparent";
+  this.style.border="none";
+}
+div_outdoor.onpointerdown=async function() {
+  target1=mesh3;
+  target2=mesh2;
+  await came_fov();
+  scene.remove(mesh4);
+  scene.remove(mesh1);
+    scene.remove(mesh3);
+    scene.add(mesh2);
+    document.getElementsByClassName("label")[0].style.height="260px";
+  document.getElementsByClassName("anno")[0].style.visibility="visible";
+  document.getElementsByClassName("anno2")[0].style.visibility="visible";
+  document.getElementsByClassName("anno6")[0].style.visibility="visible";
+  document.getElementsByClassName("anno3")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno4")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno5")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate")[0].style.visibility="visible";
+  document.getElementsByClassName("gate3")[0].style.visibility="visible";
+  document.getElementsByClassName("gate6")[0].style.visibility="visible";
+  document.getElementsByClassName("gate7")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_2")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_3")[0].style.visibility="hidden";
+  camera.fov=60;
+  camera.updateProjectionMatrix();
+
+}
+
+var pos_outdoor_2 = new THREE.Vector3(-33.0, 2.8, 57.4);
+
+var div_outdoor_2=document.createElement("div");
+div_outdoor_2.className="outdoor_2";
+
+var label_outdoor_2 = new CSS3DObject(div_outdoor_2);
+label_outdoor_2.position.copy(pos_outdoor_2 );
+label_outdoor_2.rotation.y = Math.PI * 1.399;
+label_outdoor_2.scale.set(0.025, 0.025, 1);
+box.add(label_outdoor_2 );
+
+div_outdoor_2.onpointerenter=function() {
+  this.style.background="rgba( 255, 255, 255, .4 )";
+  this.style.border="1px solid white";
+}
+
+div_outdoor_2.onpointerleave=function() {
+  this.style.background="transparent";
+  this.style.border="none";
+}
+
+div_outdoor_2.onpointerdown=async function() {
+  target1=mesh3;
+  target2=mesh1;
+  await came_fov();
+  scene.remove(mesh3);
+    scene.remove(mesh2);
+    scene.remove(mesh4);
+    scene.add(mesh1);
+    document.getElementsByClassName("label")[0].style.height="0px";
+  document.getElementsByClassName("anno")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno2")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno6")[0].style.visibility="visible";
+  document.getElementsByClassName("anno3")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno4")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno5")[0].style.visibility="visible";
+  document.getElementsByClassName("gate")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate3")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate6")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate7")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_2")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_3")[0].style.visibility="visible";
+  camera.fov=60;
+  camera.updateProjectionMatrix();
+
+}
+
+var pos_outdoor_3 = new THREE.Vector3(69, 11, 8.5);
+
+var div_outdoor_3=document.createElement("div");
+div_outdoor_3.className="outdoor_3";
+
+var label_outdoor_3 = new CSS3DObject(div_outdoor_3);
+label_outdoor_3.position.copy(pos_outdoor_3 );
+label_outdoor_3.rotation.y = Math.PI * 0.5;
+label_outdoor_3.scale.set(0.025, 0.025, 1);
+box.add(label_outdoor_3 );
+
+div_outdoor_3.onpointerenter=function() {
+  this.style.background="rgba( 255, 255, 255, .4 )";
+  this.style.border="1px solid white";
+}
+
+div_outdoor_3.onpointerleave=function() {
+  this.style.background="transparent";
+  this.style.border="none";
+}
+
+div_outdoor_3.onpointerdown=async function() {
+  target1=mesh1;
+  target2=mesh2;
+  await came_fov();
+  scene.remove(mesh3);
+    scene.remove(mesh1);
+    scene.remove(mesh4);
+    scene.add(mesh2);
+    document.getElementsByClassName("label")[0].style.height="260px";
+  document.getElementsByClassName("anno")[0].style.visibility="visible";
+  document.getElementsByClassName("anno2")[0].style.visibility="visible";
+  document.getElementsByClassName("anno6")[0].style.visibility="visible";
+  document.getElementsByClassName("anno3")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno4")[0].style.visibility="hidden";
+  document.getElementsByClassName("anno5")[0].style.visibility="hidden";
+  document.getElementsByClassName("gate")[0].style.visibility="visible";
+  document.getElementsByClassName("gate3")[0].style.visibility="visible";
+  document.getElementsByClassName("gate6")[0].style.visibility="visible";
+  document.getElementsByClassName("gate7")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_2")[0].style.visibility="hidden";
+  document.getElementsByClassName("outdoor_3")[0].style.visibility="hidden";
+  camera.fov=60;
+  camera.updateProjectionMatrix();
+
+}
+window.addEventListener('resize', onWindowResize, false);
+
+/*div.onpointerover=function() {
+   this.style.background="red";
+}
+div.onpointerleave=function() {
+   this.style.background="rgba( 0, 0, 0, .6 )";
+}*/
+animate();
+
+
+function onWindowResize() {
+
+  camera.aspect = window.innerWidth / window.innerHeight;
+
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  labelRenderer.setSize(window.innerWidth, window.innerHeight);
+
+}
+
+
+function onDocumentMouseDown( event ) {
+
+event.preventDefault();
+
+isUserInteracting = true;
+
+onPointerDownPointerX = event.clientX;
+onPointerDownPointerY = event.clientY;
+
+onPointerDownLon = lon;
+onPointerDownLat = lat;
+
+}
+
+function onDocumentMouseMove( event ) {
+
+if ( isUserInteracting === true ) {
+
+    lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
+    lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+
+}
+
+}
+
+function onDocumentMouseUp( event ) {
+isUserInteracting=false;
+
+//delete update();
+
+}
+
+function onDocumentMouseWheel( event ) {
+ 
+if(camera.fov<=60 && camera.fov>=16.25) {
+camera.fov += event.deltaY * 0.05;
+camera.updateProjectionMatrix();
+console.log(event.deltaY);
+console.log(camera.fov);
+}
+else {
+  camera.fov=60;
+
+}
+}
+
+/*########################################*/
+
+function onDocumentMouseDown2( event ) {
+
+//event.preventDefault();
+
+isUserInteracting = true;
+
+onPointerDownPointerX = event.touches[0].clientX;
+onPointerDownPointerY = event.touches[0].clientY;
+
+onPointerDownLon = lon;
+onPointerDownLat = lat;
+
+}
+
+function onDocumentMouseMove2( event ) {
+
+if ( isUserInteracting === true ) {
+
+    lon = ( onPointerDownPointerX - event.touches[0].clientX ) * 0.1 + onPointerDownLon;
+    lat = ( event.touches[0].clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+
+}
+
+}
+
+function onDocumentMouseUp2( event ) {
+
+  isUserInteracting = false;
+}
+
+function onDocumentMouseWheel2( event ) {
+ 
+if(camera.fov<=60 && camera.fov>=16.25) {
+camera.fov += event.deltaY * 0.05;
+camera.updateProjectionMatrix();
+console.log(event.deltaY);
+console.log(camera.fov);
+}
+else {
+  camera.fov=60;
+
+}
+}
+
+
+
+function animate() {
+  requestAnimationFrame(animate);
+  update();
+
+
+  cNormal.copy(normal).applyMatrix3(box.normalMatrix);
+  cPos.copy(pos).applyMatrix4(m4.multiplyMatrices(camera.matrixWorldInverse, box.matrixWorld));
+  let d = cPos.negate().dot(cNormal);
+
+  div.style.visibility = d < 0 ? "hidden" : "visible";
+
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+
+ 
+
+}
+
+function update() {
+
+if ( isUserInteracting === false ) {
+
+ //  lon += 0.05;
+  let frameCount = 0;
+let lastTime;
+let fps;
+
+function countFrames(timestamp) {
+    if (!lastTime) {
+        lastTime = timestamp;
+    }
+
+    let diff = timestamp - lastTime;
+    let interval = 1000 / 60; // 60 FPS ideal değer.
+
+    if (diff < interval) {
+        requestAnimationFrame(countFrames);
+        return;
+    }
+
+    frameCount++;
+
+    if (diff >= 1000) {
+        fps = frameCount;
+        frameCount = 0;
+        lastTime = timestamp;
+
+        // FPS değerini konsola yazdır.
+        console.log(fps + ' FPS');
+document.getElementById("fps").innerHTML=fps;
+      
+if(fps <= 60) {
+ 
+ lon += 0.01;
+}
+else if(fps >=100) {
+
+lon += 0.02;
+}
+        
+    }
+
+    requestAnimationFrame(countFrames);
+}
+
+// Fonksiyonu başlat.
+requestAnimationFrame(countFrames);
+
+}
+
+lat = Math.max( - 85, Math.min( 85, lat ) );
+phi = THREE.Math.degToRad( 90 - lat );
+theta = THREE.Math.degToRad( lon );
+
+camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+camera.target.y = 500 * Math.cos( phi );
+camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+
+camera.lookAt( camera.target );
+
+//console.log(camera.target);
+
+/*
+// distortion
+camera.position.copy( camera.target ).negate();
+*/
+
+renderer.render( scene, camera );
+
+}
+
+}
+        </script>
+
+        <p id="fps">fps</p>
+</body>
+</html>
