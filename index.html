@@ -407,7 +407,7 @@ target1=mesh3;
       var fov_anim=window.setInterval(function() {
       fov1-=5;
       camera.fov-=5;
-      camera.updateProjectionMatrix();
+      camera.ProjectionMatrix();
       console.log(camera.fov)
       target1.material.opacity-=0.1;
      // target2.material.opacity+=0.1;
@@ -1191,7 +1191,8 @@ function animate() {
   requestAnimationFrame(animate);
   update();
 
-
+  lon += 0.05;
+    
   cNormal.copy(normal).applyMatrix3(box.normalMatrix);
   cPos.copy(pos).applyMatrix4(m4.multiplyMatrices(camera.matrixWorldInverse, box.matrixWorld));
   let d = cPos.negate().dot(cNormal);
@@ -1209,7 +1210,7 @@ function update() {
 
 if ( isUserInteracting === false ) {
 
- //  lon += 0.05;
+   //lon += 0.05;
   let frameCount = 0;
 let lastTime;
 let fps;
@@ -1240,11 +1241,11 @@ document.getElementById("fps").innerHTML=fps;
       
 if(fps <= 60) {
  
- lon += 0.01;
+// lon += 0.01;
 }
 else if(fps >=100) {
 
-lon += 0.02;
+//lon += 0.02;
 }
         
     }
