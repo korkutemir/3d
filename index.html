@@ -231,6 +231,9 @@ import {
   CSS3DRenderer,
   CSS3DObject
 } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/renderers/CSS3DRenderer.js';
+import {
+VRButton
+} from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/webxr/VRButton.js";
 
 window.onload=function() {
 
@@ -247,6 +250,7 @@ var renderer = new THREE.WebGLRenderer({
  // context: gl.getContext('webgl2')
   //canvas:gl
 });
+renderer.xr.enabled = true;
 //renderer.getContext('webgl2');
 renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -256,6 +260,8 @@ labelRenderer.setSize(innerWidth, innerHeight);
 labelRenderer.domElement.style.position = 'absolute';
 labelRenderer.domElement.style.top = '0px';
 document.body.appendChild(labelRenderer.domElement);
+
+document.body.appendChild( VRButton.createButton( renderer ) );
 
 
 var isUserInteracting = false,
