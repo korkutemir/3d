@@ -1208,6 +1208,23 @@ function animate() {
 
 function update() {
 
+  document.getElementById("fps").onclick=function() {
+    if ('xr' in navigator) {
+  navigator.xr.requestSession('immersive-vr')
+    .then((session) => {
+      // The session has been successfully started
+      // Here, you can perform VR-related tasks or render VR content
+    })
+    .catch((error) => {
+      // Handle any errors that occurred during session initialization
+      console.error('Failed to start VR session:', error);
+    });
+} else {
+  console.error('WebXR is not supported.');
+  // Handle the lack of WebXR support gracefully
+}
+  }
+
 if ( isUserInteracting === false ) {
 
    //lon += 0.05;
@@ -1283,5 +1300,6 @@ renderer.render( scene, camera );
         </script>
 
         <p id="fps">fps</p>
+        
 </body>
 </html>
