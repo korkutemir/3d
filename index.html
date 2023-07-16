@@ -213,6 +213,11 @@
   left:10px;
   top:10px;
 }
+        #button {
+  position: absolute;
+  left:10px;
+  top:40px;
+}
     </style>
 </head>
 <body>
@@ -333,6 +338,23 @@ load2(image2);
 load3(image4);
 //load4(image3);
 
+  document.getElementById("button").onclick=function() {
+    if ('xr' in navigator) {
+  navigator.xr.requestSession('immersive-vr')
+    .then((session) => {
+      // The session has been successfully started
+      // Here, you can perform VR-related tasks or render VR content
+    })
+    .catch((error) => {
+      // Handle any errors that occurred during session initialization
+      console.error('Failed to start VR session:', error);
+    });
+} else {
+  console.error('WebXR is not supported.');
+  // Handle the lack of WebXR support gracefully
+}
+  }
+    
     function load1(image1) {
       
       var geometry = new THREE.SphereGeometry( 500, 60, 40 );
@@ -1208,23 +1230,6 @@ function animate() {
 
 function update() {
 
-  document.getElementById("fps").onclick=function() {
-    if ('xr' in navigator) {
-  navigator.xr.requestSession('immersive-vr')
-    .then((session) => {
-      // The session has been successfully started
-      // Here, you can perform VR-related tasks or render VR content
-    })
-    .catch((error) => {
-      // Handle any errors that occurred during session initialization
-      console.error('Failed to start VR session:', error);
-    });
-} else {
-  console.error('WebXR is not supported.');
-  // Handle the lack of WebXR support gracefully
-}
-  }
-
 if ( isUserInteracting === false ) {
 
    //lon += 0.05;
@@ -1300,6 +1305,6 @@ renderer.render( scene, camera );
         </script>
 
         <p id="fps">fps</p>
-        
+        <button id="button">VR</button>
 </body>
 </html>
