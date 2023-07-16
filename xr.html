@@ -19,7 +19,7 @@ import {
 
         window.onload=function() {
             document.getElementById("button").onclick=function() {
-              if ('xr' in navigator && 'Cardboard' in navigator.xr) {
+              if ('xr' in navigator) {
   navigator.xr.requestSession('immersive-vr', {
     requiredFeatures: ['local-floor', 'bounded-floor'],
     optionalFeatures: ['hand-tracking']
