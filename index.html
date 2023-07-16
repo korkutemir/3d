@@ -236,6 +236,8 @@ window.onload=function() {
 
 //var gl=document.getElementsByTagName("canvas")[0];
 
+function model_load() {
+
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000);
 camera.position.set(10, 10, 10);
@@ -340,12 +342,13 @@ load3(image4);
 //load4(image3);
 
   document.getElementById("button").onclick=function() {
-      alert("sadas");
+     
     if ('xr' in navigator) {
   navigator.xr.requestSession('immersive-vr')
     .then((session) => {
       // The session has been successfully started
       // Here, you can perform VR-related tasks or render VR content
+      model_load();
     })
     .catch((error) => {
       // Handle any errors that occurred during session initialization
@@ -1302,7 +1305,8 @@ camera.position.copy( camera.target ).negate();
 renderer.render( scene, camera );
 
 }
-
+}
+model_load();
 }
         </script>
 
