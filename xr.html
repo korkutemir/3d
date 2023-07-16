@@ -19,63 +19,62 @@ import {
 
         window.onload=function() {
             document.getElementById("button").onclick=function() {
-              if ('xr' in navigator) {
-  navigator.xr.requestSession('immersive-vr')
-    .then((session) => {
-      // The session has been successfully started
+              if ('xr' in navigator && 'Cardboard' in navigator.xr) {
+  navigator.xr.requestSession('immersive-vr', {
+    requiredFeatures: ['local-floor', 'bounded-floor'],
+    optionalFeatures: ['hand-tracking']
+  })
+  .then((session) => {
+    // The session has been successfully started
 
-      // Create a Three.js scene
-      const scene = new THREE.Scene();
+    // Create a Three.js scene
+    const scene = new THREE.Scene();
 
-      // Create a Three.js camera
-      const camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
+    // Create a Three.js camera
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
 
-      // Create a Three.js renderer
-      const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
+    // Create a Three.js renderer
+    const renderer = new THREE.WebGLRenderer({ xrCompatible: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-      // Render the scene with the camera
-      function animate() {
-        renderer.setAnimationLoop(() => {
-          renderer.render(scene, camera);
-        });
-      }
-      animate();
+    // Set up the renderer for WebXR
+    renderer.xr.enabled = true;
+    renderer.xr.setReferenceSpaceType('local-floor');
 
-      // Create a Three.js cube
-      const geometry = new THREE.BoxGeometry();
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-      const cube = new THREE.Mesh(geometry, material);
-      scene.add(cube);
-
-      // Position and orient the cube in the VR space
-      cube.position.set(0, 0, -1); // Example position
-      cube.rotation.set(0, Math.PI / 4, 0); // Example rotation
-
-      // End the VR session when necessary
-      session.addEventListener('end', () => {
-        // Cleanup tasks or actions to be performed when the VR session ends
-
-        // Stop the animation loop
-        renderer.setAnimationLoop(null);
-
-        // Remove the renderer element from the DOM
-        document.body.removeChild(renderer.domElement);
+    // Render the scene with the camera
+    function animate() {
+      renderer.setAnimationLoop(() => {
+        renderer.render(scene, camera);
       });
-    })
-    .catch((error) => {
-      // Handle any errors that occurred during session initialization
-      console.error('Failed to start VR session:', error);
+    }
+    animate();
+
+    // Add any VR-related tasks or VR content to the scene
+
+    // End the VR session when necessary
+    session.addEventListener('end', () => {
+      // Cleanup tasks or actions to be performed when the VR session ends
+
+      // Stop the animation loop
+      renderer.setAnimationLoop(null);
+
+      // Remove the renderer element from the DOM
+      document.body.removeChild(renderer.domElement);
     });
+  })
+  .catch((error) => {
+    // Handle any errors that occurred during session initialization
+    console.error('Failed to start VR session:', error);
+  });
 } else {
-  console.error('WebXR is not supported.');
-  // Handle the lack of WebXR support gracefully
+  console.error('WebXR or Cardboard is not supported.');
+  // Handle the lack of WebXR or Cardboard support gracefully
 }
             }
         }
