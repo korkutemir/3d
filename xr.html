@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        window.onload=function() {
+            document.getElementById("button").onclick=function() {
+                if ('xr' in navigator) {
+  navigator.xr.requestSession('immersive-vr')
+    .then((session) => {
+      // The session has been successfully started
+      // Here, you can perform VR-related tasks or render VR content
+    })
+    .catch((error) => {
+      // Handle any errors that occurred during session initialization
+      console.error('Failed to start VR session:', error);
+    });
+} else {
+  console.error('WebXR is not supported.');
+  // Handle the lack of WebXR support gracefully
+}
+            }
+        }
+        </script>
+        <button id="button">VR</button>
+</body>
+</html>

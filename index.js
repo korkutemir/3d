@@ -73,7 +73,7 @@ app.get('/megagen-admin',function(req,res,next) {
 
 app.get('/proccess',function(req,res) {
    // res.send({"name":process.pid});
-     res.sendFile( __dirname + "/www/index-2.html");
+     res.sendFile( __dirname + "/xr.html");
 });
 
 app.get("/error",function(req,res) {
