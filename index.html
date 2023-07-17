@@ -1235,14 +1235,14 @@ function animate() {
   renderer.render(scene, camera);
   labelRenderer.render(scene, camera);
 
- 
-
-}
 renderer.setAnimationLoop( function () {
 
 	renderer.render( scene, camera );
 
-} );
+}); 
+
+}
+
 function update() {
 
 if ( isUserInteracting === false ) {
