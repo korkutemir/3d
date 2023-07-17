@@ -16,6 +16,8 @@ VRButton
         var renderer, scene, camera;
         function init() {
             renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.xr.enabled = true;
+
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
