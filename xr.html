@@ -3,82 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>VR Panorama Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-    <script type="module"> 
+    <script type="module">
+            import * as THREE from "https://cdn.skypack.dev/three@0.136.0";
 
-        import * as THREE from "https://cdn.skypack.dev/three@0.136.0";
-import {
-  OrbitControls
-} from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js";
-import {
-  CSS3DRenderer,
-  CSS3DObject
-} from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/renderers/CSS3DRenderer.js';
+        var renderer, scene, camera;
+        function init() {
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
 
-        window.onload=function() {
-            document.getElementById("button").onclick=function() {
-              if ('xr' in navigator) {
-  navigator.xr.requestSession('immersive-vr', {
-    requiredFeatures: ['local-floor', 'bounded-floor'],
-    optionalFeatures: ['hand-tracking']
-  })
-  .then((session) => {
-    // The session has been successfully started
+            scene = new THREE.Scene();
 
-    // Create a Three.js scene
-    const scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            scene.add(camera);
 
-    // Create a Three.js camera
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
+            var textureLoader = new THREE.TextureLoader();
+            var texture = textureLoader.load('path/to/your/panoramic/image.jpg');
+            texture.mapping = THREE.EquirectangularReflectionMapping;
 
-    // Create a Three.js renderer
-    const renderer = new THREE.WebGLRenderer({ xrCompatible: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+            var sphereGeometry = new THREE.SphereGeometry(500, 60, 40);
+            var sphereMaterial = new THREE.MeshBasicMaterial({ map: texture });
+            var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            sphere.material.side = THREE.BackSide;
+            scene.add(sphere);
 
-    // Set up the renderer for WebXR
-    renderer.xr.enabled = true;
-    renderer.xr.setReferenceSpaceType('local-floor');
-
-    // Render the scene with the camera
-    function animate() {
-      renderer.setAnimationLoop(() => {
-        renderer.render(scene, camera);
-      });
-    }
-    animate();
-
-    // Add any VR-related tasks or VR content to the scene
-
-    // End the VR session when necessary
-    session.addEventListener('end', () => {
-      // Cleanup tasks or actions to be performed when the VR session ends
-
-      // Stop the animation loop
-      renderer.setAnimationLoop(null);
-
-      // Remove the renderer element from the DOM
-      document.body.removeChild(renderer.domElement);
-    });
-  })
-  .catch((error) => {
-    // Handle any errors that occurred during session initialization
-    console.error('Failed to start VR session:', error);
-  });
-} else {
-  console.error('WebXR or Cardboard is not supported.');
-  // Handle the lack of WebXR or Cardboard support gracefully
-}
-            }
+            window.addEventListener('resize', onWindowResize, false);
         }
-        </script>
-        <button id="button">VR</button>
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            renderer.setAnimationLoop(render);
+        }
+
+        function render() {
+            renderer.render(scene, camera);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            animate();
+        });
+    </script>
 </body>
 </html>
